@@ -11,7 +11,7 @@ import (
 
 var (
         downloadFileName = "index.html"
-        downloadURLPath  = "http://127.0.0.1"
+        downloadURLPath  = "http://127.0.0.1:8080"
 )
 
 func main() {
@@ -21,7 +21,7 @@ func main() {
 
 func hostHTTPContent() {
         http.HandleFunc("/", helloServer)
-        http.ListenAndServe(":80", nil)
+        http.ListenAndServe(":8080", nil)
 }
 
 func helloServer(w http.ResponseWriter, r *http.Request) {
