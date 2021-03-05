@@ -10,8 +10,9 @@ import (
 )
 
 var (
-	gigabyteToWaste  = 1024
-	downloadFileName = "random-test-file"
+	// 1024 MB = 1GB
+	megabyteToWaste  = 1024
+	downloadFileName = "random-string-file"
 	downloadURLPath  = "https://raw.githubusercontent.com/complexorganizations/bandwidth-waster/main/random-test-file"
 	startTime        = time.Now()
 )
@@ -21,15 +22,15 @@ func main() {
 }
 
 func downloadHTTPContent() {
-	for loop := 0; loop <= gigabyteToWaste; loop++ {
+	for loop := 0; loop <= megabyteToWaste; loop++ {
 		err := downloadFile(downloadFileName, downloadURLPath)
 		if err != nil {
 			log.Println(err)
 		}
-		os.Remove(downloadFileName)
-		fmt.Println(loop, "Gigabyte Wasted")
+		fmt.Println(loop, "Megabytes Wasted")
 		fmt.Println(time.Since(startTime), "Time Running")
 	}
+	os.Remove(downloadFileName)
 }
 
 func downloadFile(filepath string, url string) error {
