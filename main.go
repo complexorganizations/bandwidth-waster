@@ -10,6 +10,7 @@ import (
 )
 
 var (
+        gigabytesToWaste = 1
         downloadFileName = "index.html"
         downloadURLPath  = "http://127.0.0.1:8080"
 )
@@ -25,16 +26,17 @@ func hostHTTPContent() {
 }
 
 func helloServer(w http.ResponseWriter, r *http.Request) {
-        fmt.Fprintf(w, randomString(1024))
+        fmt.Fprintf(w, randomString(1073741824))
 }
 
 func downloadHTTPContent() {
-        for {
+        for loop := 0; loop <= gigabytesToWaste; loop++{
                 err := downloadFile(downloadFileName, downloadURLPath)
                 if err != nil {
                         log.Println(err)
                 }
                 os.Remove(downloadFileName)
+                fmt.Println(gigabytesToWaste, "Gigabytes Wasted")
         }
 }
 
