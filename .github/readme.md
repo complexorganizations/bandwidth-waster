@@ -1,38 +1,16 @@
 ### Bandwidth Waster
 
+This is a simple solution which will waste your bandwidth.
+
 ---
 ### Features
 - Waste your bandwidth
-- 
-- 
-- 
 
 ---
 ### Q&A
 
-How
-- 
-- 
-- 
-- 
-
-Which
-- 
-- 
-- 
--
-
-Is
-- 
-- 
-- 
--
-
-How 
-- 
-- 
-- 
--
+Why did you create this?
+- Needed to waste some bandwidth, and didn't find any good solution to do so.
 
 ---
 ### Author
