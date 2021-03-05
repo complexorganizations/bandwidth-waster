@@ -6,12 +6,14 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 var (
 	megabytesToWaste = 102400000
 	downloadFileName = "random-test-file"
 	downloadURLPath  = "https://raw.githubusercontent.com/complexorganizations/bandwidth-waster/main/random-test-file"
+	startTime        = time.Now()
 )
 
 func main() {
@@ -26,6 +28,7 @@ func downloadHTTPContent() {
 		}
 		os.Remove(downloadFileName)
 		fmt.Println(loop, "Megabytes Wasted")
+		fmt.Println(time.Since(startTime), "Time running")
 	}
 }
 
