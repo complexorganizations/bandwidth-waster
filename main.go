@@ -16,7 +16,7 @@ import (
 
 var (
 	megabyteToWaste  = 1024
-	downloadFileName = "random-string-file"
+	downloadFileName = "random-test-file"
 	downloadURLPath  = "https://raw.githubusercontent.com/complexorganizations/bandwidth-waster/main/random-test-file"
 	startTime        = time.Now()
 )
