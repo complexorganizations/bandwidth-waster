@@ -21,7 +21,7 @@ func main() {
 }
 
 func downloadHTTPContent() {
-	for loop := 0; loop <= megabytesToWaste; loop++ {
+	for loop := 0; loop <= gigabyteToWaste; loop++ {
 		err := downloadFile(downloadFileName, downloadURLPath)
 		if err != nil {
 			log.Println(err)
