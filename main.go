@@ -36,7 +36,7 @@ func downloadHTTPContent() {
                         log.Println(err)
                 }
                 os.Remove(downloadFileName)
-                fmt.Println(gigabytesToWaste, "Gigabytes Wasted")
+                fmt.Println(megabytesToWaste, "Megabytes Wasted")
         }
 }
 
