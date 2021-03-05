@@ -1,63 +1,45 @@
 package main
 
 import (
-	"crypto/rand"
-	"fmt"
-	"io"
-	"log"
-	"net/http"
-	"os"
+        "fmt"
+        "io"
+        "log"
+        "net/http"
+        "os"
 )
 
 var (
-	megabytesToWaste = 102400000
-	downloadFileName = "index.html"
-	downloadURLPath  = "http://127.0.0.1:8080"
+        megabytesToWaste = 102400000
+        downloadFileName = "index.html"
+        downloadURLPath  = "https://ros-static.ga/public/ros-data-waster-dummy"
 )
 
 func main() {
-	hostHTTPContent()
-	downloadHTTPContent()
-}
-
-func hostHTTPContent() {
-	http.HandleFunc("/", helloServer)
-	http.ListenAndServe(":8080", nil)
-}
-
-func helloServer(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, randomString(1048576))
+        downloadHTTPContent()
 }
 
 func downloadHTTPContent() {
-	for loop := 0; loop <= megabytesToWaste; loop++ {
-		err := downloadFile(downloadFileName, downloadURLPath)
-		if err != nil {
-			log.Println(err)
-		}
-		os.Remove(downloadFileName)
-		fmt.Println(loop, "Megabytes Wasted")
-	}
+        for loop := 0; loop <= megabytesToWaste; loop++ {
+                err := downloadFile(downloadFileName, downloadURLPath)
+                if err != nil {
+                        log.Println(err)
+                }
+                os.Remove(downloadFileName)
+                fmt.Println(loop, "Megabytes Wasted")
+        }
 }
 
 func downloadFile(filepath string, url string) error {
-	resp, err := http.Get(url)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-	out, err := os.Create(filepath)
-	if err != nil {
-		return err
-	}
-	defer out.Close()
-	_, err = io.Copy(out, resp.Body)
-	return err
-}
-
-func randomString(bytesize int) string {
-	randomBytes := make([]byte, bytesize)
-	rand.Read(randomBytes)
-	randomString := fmt.Sprintf("%X", randomBytes)
-	return randomString
+        resp, err := http.Get(url)
+        if err != nil {
+                return err
+        }
+        defer resp.Body.Close()
+        out, err := os.Create(filepath)
+        if err != nil {
+                return err
+        }
+        defer out.Close()
+        _, err = io.Copy(out, resp.Body)
+        return err
 }
