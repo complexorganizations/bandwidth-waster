@@ -9,8 +9,12 @@ import (
 	"time"
 )
 
+// 1024 Megabytes = 1 Gigabytes
+// 1048576 Megabytes = 1 Terabytes
+// 1073741824 Megabytes = 1 Petabytes
+// 1099511627776 Megabytes = 1 Exabytes
+
 var (
-	// 1024 MB = 1GB
 	megabyteToWaste  = 1024
 	downloadFileName = "random-string-file"
 	downloadURLPath  = "https://raw.githubusercontent.com/complexorganizations/bandwidth-waster/main/random-test-file"
