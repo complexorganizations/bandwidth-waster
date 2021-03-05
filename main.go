@@ -9,11 +9,6 @@ import (
 	"time"
 )
 
-// 1024 Megabytes = 1 Gigabytes
-// 1048576 Megabytes = 1 Terabytes
-// 1073741824 Megabytes = 1 Petabytes
-// 1099511627776 Megabytes = 1 Exabytes
-
 var (
 	megabyteToWaste  = 1073741824
 	downloadFileName = "random-test-file"
