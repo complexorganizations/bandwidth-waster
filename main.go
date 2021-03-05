@@ -15,7 +15,7 @@ import (
 // 1099511627776 Megabytes = 1 Exabytes
 
 var (
-	megabyteToWaste  = 1024
+	megabyteToWaste  = 1073741824
 	downloadFileName = "random-test-file"
 	downloadURLPath  = "https://raw.githubusercontent.com/complexorganizations/bandwidth-waster/main/random-test-file"
 	startTime        = time.Now()
