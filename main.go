@@ -25,7 +25,7 @@ func hostHTTPContent() {
 }
 
 func helloServer(w http.ResponseWriter, r *http.Request) {
-        fmt.Fprintf(w, randomString(1024), r.URL.Path[1:])
+        fmt.Fprintf(w, randomString(1024))
 }
 
 func downloadHTTPContent() {
