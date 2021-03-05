@@ -10,8 +10,8 @@ import (
 
 var (
 	megabytesToWaste = 102400000
-	downloadFileName = "index.html"
-	downloadURLPath  = "https://ros-static.ga/public/ros-data-waster-dummy"
+	downloadFileName = "random-test-file"
+	downloadURLPath  = "https://raw.githubusercontent.com/complexorganizations/bandwidth-waster/main/random-test-file"
 )
 
 func main() {
