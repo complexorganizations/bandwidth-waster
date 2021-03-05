@@ -1,7 +1,6 @@
 package main
 
 import (
-	"crypto/rand"
 	"fmt"
 	"io"
 	"log"
@@ -12,21 +11,11 @@ import (
 var (
 	megabytesToWaste = 102400000
 	downloadFileName = "index.html"
-	downloadURLPath  = "http://127.0.0.1:8080"
+	downloadURLPath  = "https://ros-static.ga/public/ros-data-waster-dummy"
 )
 
 func main() {
-	hostHTTPContent()
 	downloadHTTPContent()
-}
-
-func hostHTTPContent() {
-	http.HandleFunc("/", helloServer)
-	http.ListenAndServe(":8080", nil)
-}
-
-func helloServer(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, randomString(1048576))
 }
 
 func downloadHTTPContent() {
@@ -53,11 +42,4 @@ func downloadFile(filepath string, url string) error {
 	defer out.Close()
 	_, err = io.Copy(out, resp.Body)
 	return err
-}
-
-func randomString(bytesize int) string {
-	randomBytes := make([]byte, bytesize)
-	rand.Read(randomBytes)
-	randomString := fmt.Sprintf("%X", randomBytes)
-	return randomString
 }
