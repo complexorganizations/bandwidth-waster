@@ -18,8 +18,12 @@ func main() {
 }
 
 func hostHTTPContent() {
-	http.Handle("/", http.FileServer(http.Dir("www")))
+	http.HandleFunc("/", helloServer)
 	http.ListenAndServe(":80", nil)
+}
+
+func helloServer(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello, %s!", r.URL.Path[1:])
 }
 
 func downloadHTTPContent() {
