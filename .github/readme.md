@@ -5,6 +5,7 @@ This is a simple solution which will waste your bandwidth.
 ---
 ### Features
 - Waste your bandwidth
+- Network Obfuscation
 
 ---
 ### Installation
