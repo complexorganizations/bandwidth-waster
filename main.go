@@ -12,7 +12,7 @@ import (
 
 var (
 	arguments        = os.Args[1]
-	downloadFileName = randomString(1024)
+	downloadFileName = randomString(64)
 	downloadFileURL  = "https://raw.githubusercontent.com/complexorganizations/bandwidth-waster/main/random-test-file"
 )
 
@@ -21,7 +21,7 @@ func main() {
 }
 
 func chooseUploadORDownload() {
-	switch imageFilePath {
+	switch arguments {
 	case "--download":
 		downloadHTTPContent()
 	case "--upload":
@@ -32,13 +32,14 @@ func chooseUploadORDownload() {
 }
 
 func uploadHTTPContent() {
+	if !fileExists(downloadFileName) {
+		err := downloadFile(downloadFileName, downloadFileURL)
+		if err != nil {
+			log.Println(err)
+		}
+	}
 	for {
-		if !fileExists(downloadFileName) {
-			err := downloadFile(downloadFileName, downloadFileURL)
-			if err != nil {
-				log.Println(err)
-			}
-		} else if fileExists(downloadFileName) {
+		if fileExists(downloadFileName) {
 			file, err := os.Open(downloadFileName)
 			if err != nil {
 				log.Println(err)
