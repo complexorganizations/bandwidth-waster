@@ -9,27 +9,76 @@ import (
 	"time"
 )
 
-var (
-	gigabyteToWaste  = 1024
-	downloadFileName = "random-test-file"
-	downloadURLPath  = "http://speedtest-sgp1.digitalocean.com/1gb.test"
-	startTime        = time.Now()
-)
-
 func main() {
 	downloadHTTPContent()
 }
 
+func changeFileViaHour() string {
+	currentHour := time.Now().Hour()
+	var downloadURLPath string
+	if currentHour == 1 {
+		downloadURLPath = "https://sgp-ping.vultr.com/vultr.com.1000MB.bin"
+	} else if currentHour == 2 {
+		downloadURLPath = "https://speed.hetzner.de/1GB.bin"
+	} else if currentHour == 3 {
+		downloadURLPath = "https://fastest.fish/lib/downloads/1GiB.bin"
+	} else if currentHour == 4 {
+		downloadURLPath = ""
+	} else if currentHour == 5 {
+		downloadURLPath = ""
+	} else if currentHour == 6 {
+		downloadURLPath = ""
+	} else if currentHour == 7 {
+		downloadURLPath = ""
+	} else if currentHour == 8 {
+		downloadURLPath = ""
+	} else if currentHour == 9 {
+		downloadURLPath = ""
+	} else if currentHour == 10 {
+		downloadURLPath = ""
+	} else if currentHour == 11 {
+		downloadURLPath = ""
+	} else if currentHour == 12 {
+		downloadURLPath = ""
+	} else if currentHour == 13 {
+		downloadURLPath = ""
+	} else if currentHour == 14 {
+		downloadURLPath = ""
+	} else if currentHour == 15 {
+		downloadURLPath = ""
+	} else if currentHour == 16 {
+		downloadURLPath = ""
+	} else if currentHour == 17 {
+		downloadURLPath = ""
+	} else if currentHour == 18 {
+		downloadURLPath = ""
+	} else if currentHour == 19 {
+		downloadURLPath = ""
+	} else if currentHour == 20 {
+		downloadURLPath = ""
+	} else if currentHour == 21 {
+		downloadURLPath = ""
+	} else if currentHour == 22 {
+		downloadURLPath = ""
+	} else if currentHour == 23 {
+		downloadURLPath = ""
+	} else if currentHour == 24 {
+		downloadURLPath = ""
+	}
+	return downloadURLPath
+}
+
 func downloadHTTPContent() {
-	for loop := 0; loop <= gigabyteToWaste; loop++ {
-		err := downloadFile(downloadFileName, downloadURLPath)
+	downloadFileName := "delete-this-file"
+	startTime := time.Now()
+	for {
+		err := downloadFile(downloadFileName, changeFileViaHour())
 		if err != nil {
 			log.Println(err)
 		}
-		fmt.Println(loop, "Megabytes Wasted")
+		os.Remove(downloadFileName)
 		fmt.Println(time.Since(startTime), "Time Running")
 	}
-	os.Remove(downloadFileName)
 }
 
 func downloadFile(filepath string, url string) error {
