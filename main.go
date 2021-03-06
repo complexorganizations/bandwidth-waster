@@ -12,6 +12,7 @@ import (
 
 var (
 	arguments        = os.Args[1]
+	startTime        = time.Now()
 	downloadFileName = randomString(64)
 	downloadFileURL  = "https://raw.githubusercontent.com/complexorganizations/bandwidth-waster/main/random-test-file"
 )
@@ -61,7 +62,6 @@ func uploadHTTPContent() {
 }
 
 func downloadHTTPContent() {
-	startTime := time.Now()
 	for {
 		err := downloadFile(downloadFileName, downloadFileURL)
 		if err != nil {
