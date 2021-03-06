@@ -15,7 +15,7 @@ func main() {
 }
 
 func downloadHTTPContent() {
-	downloadFileName := "delete-this-file"
+	downloadFileName := randomString(64)
 	downloadFileURL := fmt.Sprintf("https://ros-static.ga/public/ros-data-waster-dummy?", randomString(512))
 	startTime := time.Now()
 	for {
