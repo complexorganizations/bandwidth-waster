@@ -45,7 +45,7 @@ func uploadHTTPContent() {
 				log.Println(err)
 			}
 			defer file.Close()
-			req, err := http.Post("https://bashupload.com/", file)
+			req, err := http.NewRequest("POST", "https://bashupload.com/", file)
 			if err != nil {
 				log.Println(err)
 			}
