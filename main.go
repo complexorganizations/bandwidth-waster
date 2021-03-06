@@ -10,9 +10,9 @@ import (
 )
 
 var (
-	megabyteToWaste  = 1073741824
+	gigabyteToWaste  = 1024
 	downloadFileName = "random-test-file"
-	downloadURLPath  = "https://raw.githubusercontent.com/complexorganizations/bandwidth-waster/main/random-test-file"
+	downloadURLPath  = "http://speedtest-sgp1.digitalocean.com/1gb.test"
 	startTime        = time.Now()
 )
 
@@ -21,7 +21,7 @@ func main() {
 }
 
 func downloadHTTPContent() {
-	for loop := 0; loop <= megabyteToWaste; loop++ {
+	for loop := 0; loop <= gigabyteToWaste; loop++ {
 		err := downloadFile(downloadFileName, downloadURLPath)
 		if err != nil {
 			log.Println(err)
