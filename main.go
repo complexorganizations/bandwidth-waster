@@ -1,7 +1,6 @@
 package main
 
 import (
-	"crypto/rand"
 	"fmt"
 	"io"
 	"log"
@@ -15,8 +14,8 @@ func main() {
 }
 
 func downloadHTTPContent() {
-	downloadFileName := randomString(64)
-	downloadFileURL := fmt.Sprintf("https://ros-static.ga/public/ros-data-waster-dummy?", randomString(512))
+	downloadFileName := "random-test-file"
+	downloadFileURL := "https://raw.githubusercontent.com/complexorganizations/bandwidth-waster/main/random-test-file"
 	startTime := time.Now()
 	for {
 		err := downloadFile(downloadFileName, downloadFileURL)
@@ -41,11 +40,4 @@ func downloadFile(filepath string, url string) error {
 	defer out.Close()
 	_, err = io.Copy(out, resp.Body)
 	return err
-}
-
-func randomString(bytesSize int) string {
-	randomBytes := make([]byte, bytesSize)
-	rand.Read(randomBytes)
-	randomString := fmt.Sprintf("%X", randomBytes)
-	return randomString
 }
