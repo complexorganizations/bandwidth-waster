@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/rand"
+	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -11,24 +12,34 @@ import (
 )
 
 var (
-	arguments        = os.Args[1]
 	startTime        = time.Now()
 	downloadFileName = randomString(64)
 	downloadFileURL  = "https://raw.githubusercontent.com/complexorganizations/bandwidth-waster/main/random-test-file"
+	downloadFlag     bool
+	uploadFlag       bool
 )
 
-func main() {
-	chooseUploadORDownload()
+func init() {
+	if len(os.Args) > 1 {
+		// Supported Flags
+		tempDownloadFlag := flag.Bool("download", false, "download")
+		tempUploadFlag := flag.Bool("upload", false, "upload")
+		flag.Parse()
+		downloadFlag = *tempDownloadFlag
+		uploadFlag = *tempUploadFlag
+	} else {
+		log.Fatal("Error: There are no guidelines for what to do")
+	}
 }
 
-func chooseUploadORDownload() {
-	switch arguments {
-	case "--download":
+func main() {
+	// Download the file
+	if downloadFlag {
 		downloadHTTPContent()
-	case "--upload":
+	}
+	// Upload the file
+	if uploadFlag {
 		uploadHTTPContent()
-	default:
-		fmt.Println("Error: format not supported")
 	}
 }
 
@@ -45,7 +56,7 @@ func uploadHTTPContent() {
 			if err != nil {
 				log.Println(err)
 			}
-			defer file.Close()
+			file.Close()
 			req, err := http.NewRequest("POST", "https://bashupload.com/", file)
 			if err != nil {
 				log.Println(err)
@@ -55,7 +66,7 @@ func uploadHTTPContent() {
 			if err != nil {
 				log.Println(err)
 			}
-			defer resp.Body.Close()
+			resp.Body.Close()
 			fmt.Println(time.Since(startTime), "Time Running")
 		}
 	}
@@ -72,7 +83,7 @@ func downloadHTTPContent() {
 	}
 }
 
-func downloadFile(filepath string, url string) error {
+func downloadFile(filepath, url string) error {
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
