@@ -15,7 +15,7 @@ go get -v github.com/complexorganizations/bandwidth-waster
 ```
 Create a project applications using `bandwidth-waster`
 ```
-bandwidth-waster
+bandwidth-waster -download
 ```
 
 ---
