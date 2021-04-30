@@ -44,14 +44,16 @@ func main() {
 }
 
 func uploadHTTPContent() {
+	// If the file does not exist, you must first download it before uploading it.
 	if !fileExists(downloadFileName) {
 		err := downloadFile(downloadFileName, downloadFileURL)
 		if err != nil {
 			log.Println(err)
 		}
 	}
-	for {
-		if fileExists(downloadFileName) {
+	// If the file exists than start a loop of uploading it.
+	if fileExists(downloadFileName) {
+		for {
 			file, err := os.Open(downloadFileName)
 			if err != nil {
 				log.Println(err)
@@ -72,17 +74,22 @@ func uploadHTTPContent() {
 	}
 }
 
+// Download the files to your hard drive and then delete them.
 func downloadHTTPContent() {
 	for {
 		err := downloadFile(downloadFileName, downloadFileURL)
 		if err != nil {
 			log.Println(err)
 		}
-		os.Remove(downloadFileName)
+		err = os.Remove(downloadFileName)
+		if err != nil {
+			log.Println(err)
+		}
 		fmt.Println(time.Since(startTime), "Time Running")
 	}
 }
 
+// Download the file to the system
 func downloadFile(filepath, url string) error {
 	resp, err := http.Get(url)
 	if err != nil {
@@ -98,6 +105,7 @@ func downloadFile(filepath, url string) error {
 	return err
 }
 
+// Check if the file exists
 func fileExists(filename string) bool {
 	info, err := os.Stat(filename)
 	if os.IsNotExist(err) {
@@ -106,6 +114,7 @@ func fileExists(filename string) bool {
 	return !info.IsDir()
 }
 
+// Generate a random string
 func randomString(bytesSize int) string {
 	randomBytes := make([]byte, bytesSize)
 	rand.Read(randomBytes)
