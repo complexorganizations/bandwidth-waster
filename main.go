@@ -36,10 +36,10 @@ func main() {
 	// Download the file
 	if downloadFlag {
 		downloadHTTPContent()
-	}
-	// Upload the file
-	if uploadFlag {
+	} else if uploadFlag {
 		uploadHTTPContent()
+	} else {
+		os.Exit(0)
 	}
 }
 
