@@ -17,6 +17,7 @@ var (
 	downloadFileURL  = "https://raw.githubusercontent.com/complexorganizations/bandwidth-waster/main/random-test-file"
 	downloadFlag     bool
 	uploadFlag       bool
+	err              error
 )
 
 func init() {
@@ -51,28 +52,20 @@ func main() {
 func uploadHTTPContent() {
 	// If the file does not exist, you must first download it before uploading it.
 	if !fileExists(downloadFileName) {
-		err := downloadFile(downloadFileName, downloadFileURL)
-		if err != nil {
-			log.Println(err)
-		}
+		err = downloadFile(downloadFileName, downloadFileURL)
+		handleErrors(err)
 	}
 	// If the file exists than start a loop of uploading it.
 	if fileExists(downloadFileName) {
 		for {
 			file, err := os.Open(downloadFileName)
-			if err != nil {
-				log.Println(err)
-			}
+			handleErrors(err)
 			file.Close()
 			req, err := http.NewRequest("POST", "https://bashupload.com/", file)
-			if err != nil {
-				log.Println(err)
-			}
+			handleErrors(err)
 			req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 			resp, err := http.DefaultClient.Do(req)
-			if err != nil {
-				log.Println(err)
-			}
+			handleErrors(err)
 			resp.Body.Close()
 			fmt.Println(time.Since(startTime), "Time Running")
 		}
@@ -82,14 +75,10 @@ func uploadHTTPContent() {
 // Download the files to your hard drive and then delete them.
 func downloadHTTPContent() {
 	for {
-		err := downloadFile(downloadFileName, downloadFileURL)
-		if err != nil {
-			log.Println(err)
-		}
+		err = downloadFile(downloadFileName, downloadFileURL)
+		handleErrors(err)
 		err = os.Remove(downloadFileName)
-		if err != nil {
-			log.Println(err)
-		}
+		handleErrors(err)
 		fmt.Println(time.Since(startTime), "Time Running")
 	}
 }
@@ -125,4 +114,10 @@ func randomString(bytesSize int) string {
 	rand.Read(randomBytes)
 	randomString := fmt.Sprintf("%X", randomBytes)
 	return randomString
+}
+
+func handleErrors(err error) {
+	if err != nil {
+		log.Println(err)
+	}
 }
