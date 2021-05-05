@@ -44,8 +44,6 @@ func main() {
 		downloadHTTPContent()
 	} else if uploadFlag {
 		uploadHTTPContent()
-	} else {
-		os.Exit(0)
 	}
 }
 
