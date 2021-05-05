@@ -67,7 +67,7 @@ func uploadHTTPContent() {
 			resp, err := http.DefaultClient.Do(req)
 			handleErrors(err)
 			resp.Body.Close()
-			log.Println(time.Since(startTime), "Time Running")
+			fmt.Println(time.Since(startTime), "Time Running")
 		}
 	}
 }
@@ -79,7 +79,7 @@ func downloadHTTPContent() {
 		handleErrors(err)
 		err = os.Remove(downloadFileName)
 		handleErrors(err)
-		log.Println(time.Since(startTime), "Time Running")
+		fmt.Println(time.Since(startTime), "Time Running")
 	}
 }
 
