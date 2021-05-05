@@ -30,6 +30,15 @@ func init() {
 	} else {
 		log.Fatal("Error: There are no guidelines for what to do")
 	}
+	if uploadFlag == false && downloadFlag == false {
+		log.Fatal("Error: not a valid response")
+	} else if uploadFlag == true {
+		// GO
+	} else if downloadFlag == true {
+		// GO
+	} else {
+		log.Fatal("Error: Not a valid response")
+	}
 }
 
 func main() {
