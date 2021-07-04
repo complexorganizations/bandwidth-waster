@@ -4,8 +4,7 @@ This is a simple solution which will waste your bandwidth.
 
 ---
 ### Features
-- Waste your bandwidth
-- Network Obfuscation
+- Waste your bandwidth ** Download, Upload **
 
 ---
 ### Installation
@@ -13,7 +12,7 @@ Download the latest `bandwidth-waster` binary
 ```
 go get -v github.com/complexorganizations/bandwidth-waster
 ```
-Create a project applications using `bandwidth-waster`
+Begin by utilizing your bandwidth. `bandwidth-waster`
 ```
 bandwidth-waster -download
 ```
