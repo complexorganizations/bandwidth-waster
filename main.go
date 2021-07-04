@@ -12,11 +12,9 @@ import (
 )
 
 var (
-	downloadFileName = randomString(64)
-	downloadFileURL  = "https://raw.githubusercontent.com/complexorganizations/bandwidth-waster/main/random-test-file"
-	downloadFlag     bool
-	uploadFlag       bool
-	wg               sync.WaitGroup
+	downloadFlag bool
+	uploadFlag   bool
+	wg           sync.WaitGroup
 )
 
 func init() {
@@ -44,44 +42,58 @@ func init() {
 func main() {
 	if downloadFlag {
 		downloadHTTPContent()
-	} else if uploadFlag {
-		uploadHTTPContent()
 	}
-}
-
-func uploadHTTPContent() {
-	// If the file exists than start a loop of uploading it.
-	if fileExists(downloadFileName) {
+	if uploadFlag {
 		for {
-			file, err := os.Open(downloadFileName)
-			if err != nil {
-				log.Println(err)
-			}
-			file.Close()
-			req, err := http.NewRequest("POST", "https://bashupload.com/", file)
-			if err != nil {
-				log.Println(err)
-			}
-			req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-			resp, err := http.DefaultClient.Do(req)
-			if err != nil {
-				log.Println(err)
-			}
-			resp.Body.Close()
+			wg.Add(1)
+			go uploadHTTPContent()
 		}
 	}
 }
 
+func uploadHTTPContent() {
+	localTempFile := ".delete"
+	// open the file and if its not there create one.
+	filePath, err := os.OpenFile(localTempFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Println(err)
+	}
+	// write the content to the file
+	_, err = filePath.WriteString(string(randomString(524288)))
+	if err != nil {
+		log.Println(err)
+	}
+	// close the file
+	filePath.Close()
+	file, err := os.Open(localTempFile)
+	if err != nil {
+		log.Println(err)
+	}
+	file.Close()
+	req, err := http.NewRequest("POST", "https://bashupload.com/", file)
+	if err != nil {
+		log.Println(err)
+	}
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Println(err)
+	}
+	resp.Body.Close()
+	wg.Done()
+}
+
 // Download the files to your hard drive and then delete them.
 func downloadHTTPContent() {
+	downloadFileURL := "https://raw.githubusercontent.com/complexorganizations/bandwidth-waster/main/random-test-file"
 	for {
 		wg.Add(1)
-		go downloadFile(downloadFileName, downloadFileURL)
+		go downloadFile(downloadFileURL)
 	}
 }
 
 // Download the file to the system
-func downloadFile(filepath, url string) {
+func downloadFile(url string) {
 	response, err := http.Get(url)
 	if err != nil {
 		log.Println("Error: When attempting to send your request, an error occurred.")
@@ -92,15 +104,6 @@ func downloadFile(filepath, url string) {
 	}
 	_ = body
 	wg.Done()
-}
-
-// Check if the file exists
-func fileExists(filename string) bool {
-	info, err := os.Stat(filename)
-	if err != nil {
-		return false
-	}
-	return !info.IsDir()
 }
 
 // Generate a random string
