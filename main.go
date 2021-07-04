@@ -14,6 +14,7 @@ import (
 var (
 	downloadFlag bool
 	uploadFlag   bool
+	limitSize    int
 	wg           sync.WaitGroup
 )
 
@@ -23,9 +24,11 @@ func init() {
 		// Supported Flags
 		tempDownloadFlag := flag.Bool("download", false, "Download a huge number of files, then delete them.")
 		tempUploadFlag := flag.Bool("upload", false, "Just to strees the network, upload random big files.")
+		tempLimitFlag := flag.Int("limit", 0, "The size of the files to download or upload in megabytes.")
 		flag.Parse()
 		downloadFlag = *tempDownloadFlag
 		uploadFlag = *tempUploadFlag
+		limitSize = *tempLimitFlag
 	} else {
 		log.Fatal("Error: There are no guidelines for what to do")
 	}
@@ -37,21 +40,26 @@ func init() {
 	if uploadFlag && downloadFlag {
 		log.Fatal("Error: You can't upload and download files at the same time.")
 	}
+	// need limit in any case.
+	if limitSize == 0 {
+		log.Fatal("Error: Please specify how much data you want to squander.")
+	}
 }
 
 func main() {
 	if downloadFlag {
-		for {
+		for loop := 0; loop <= limitSize; loop++ {
 			wg.Add(1)
 			go downloadFile()
 		}
 	}
 	if uploadFlag {
-		for {
+		for loop := 0; loop <= limitSize; loop++ {
 			wg.Add(1)
 			go uploadHTTPContent()
 		}
 	}
+	wg.Wait()
 }
 
 func uploadHTTPContent() {
