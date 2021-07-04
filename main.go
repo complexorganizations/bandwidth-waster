@@ -105,7 +105,7 @@ func downloadFile(filepath, url string) {
 // Check if the file exists
 func fileExists(filename string) bool {
 	info, err := os.Stat(filename)
-	if os.IsNotExist(err) {
+	if err != nil {
 		return false
 	}
 	return !info.IsDir()
