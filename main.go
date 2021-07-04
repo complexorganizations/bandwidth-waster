@@ -90,21 +90,7 @@ func downloadFile(filepath, url string) {
 	if err != nil {
 		log.Println(err)
 	}
-	localFilePath := ".delete"
-	os.Remove(localFilePath)
-	// open the file and if its not there create one.
-	filePath, err := os.OpenFile(localFilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		log.Println(err)
-	}
-	// write the content to the file
-	_, err = filePath.WriteString(string(body))
-	if err != nil {
-		log.Println(err)
-	}
-	// close the file
-	filePath.Close()
-	response.Body.Close()
+	_ = body
 	wg.Done()
 }
 
