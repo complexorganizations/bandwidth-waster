@@ -20,6 +20,7 @@ var (
 )
 
 func init() {
+	// make sure user has passed some arguments.
 	if len(os.Args) > 1 {
 		// Supported Flags
 		tempDownloadFlag := flag.Bool("download", false, "Download a huge number of files, then delete them.")
@@ -30,8 +31,13 @@ func init() {
 	} else {
 		log.Fatal("Error: There are no guidelines for what to do")
 	}
+	// Need to choose what to do
 	if !uploadFlag && !downloadFlag {
-		log.Fatal("Error: Not a valid response")
+		log.Fatal("Error: It is necessary for you to select whether you want to download or upload the file.")
+	}
+	// Cant do both at the same time.
+	if uploadFlag && downloadFlag {
+		log.Fatal("Error: You can't upload and download files at the same time.")
 	}
 }
 
