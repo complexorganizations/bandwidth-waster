@@ -41,7 +41,10 @@ func init() {
 
 func main() {
 	if downloadFlag {
-		downloadHTTPContent()
+		for {
+			wg.Add(1)
+			go downloadFile()
+		}
 	}
 	if uploadFlag {
 		for {
@@ -83,17 +86,9 @@ func uploadHTTPContent() {
 	wg.Done()
 }
 
-// Download the files to your hard drive and then delete them.
-func downloadHTTPContent() {
-	downloadFileURL := "https://raw.githubusercontent.com/complexorganizations/bandwidth-waster/main/random-test-file"
-	for {
-		wg.Add(1)
-		go downloadFile(downloadFileURL)
-	}
-}
-
 // Download the file to the system
-func downloadFile(url string) {
+func downloadFile() {
+	url := "https://raw.githubusercontent.com/complexorganizations/bandwidth-waster/main/random-test-file"
 	response, err := http.Get(url)
 	if err != nil {
 		log.Println("Error: When attempting to send your request, an error occurred.")
