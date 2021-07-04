@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"sync"
 	"time"
 )
 
@@ -17,7 +18,7 @@ var (
 	downloadFileURL  = "https://raw.githubusercontent.com/complexorganizations/bandwidth-waster/main/random-test-file"
 	downloadFlag     bool
 	uploadFlag       bool
-	err              error
+	wg               sync.WaitGroup
 )
 
 func init() {
@@ -31,9 +32,7 @@ func init() {
 	} else {
 		log.Fatal("Error: There are no guidelines for what to do")
 	}
-	if uploadFlag == true || downloadFlag == true {
-		// Amazing
-	} else {
+	if !uploadFlag && !downloadFlag {
 		log.Fatal("Error: Not a valid response")
 	}
 }
@@ -48,11 +47,6 @@ func main() {
 }
 
 func uploadHTTPContent() {
-	// If the file does not exist, you must first download it before uploading it.
-	if !fileExists(downloadFileName) {
-		err = downloadFile(downloadFileName, downloadFileURL)
-		handleErrors(err)
-	}
 	// If the file exists than start a loop of uploading it.
 	if fileExists(downloadFileName) {
 		for {
@@ -65,7 +59,6 @@ func uploadHTTPContent() {
 			resp, err := http.DefaultClient.Do(req)
 			handleErrors(err)
 			resp.Body.Close()
-			fmt.Println(time.Since(startTime))
 		}
 	}
 }
@@ -73,28 +66,25 @@ func uploadHTTPContent() {
 // Download the files to your hard drive and then delete them.
 func downloadHTTPContent() {
 	for {
-		err = downloadFile(downloadFileName, downloadFileURL)
-		handleErrors(err)
-		err = os.Remove(downloadFileName)
-		handleErrors(err)
+		wg.Add(1)
+		go downloadFile(downloadFileName, downloadFileURL)
 		fmt.Println(time.Since(startTime))
 	}
 }
 
 // Download the file to the system
-func downloadFile(filepath, url string) error {
-	resp, err := http.Get(url)
+func downloadFile(filepath, url string) {
+	response, err := http.Get(url)
 	if err != nil {
-		return err
+		log.Println("Error: When attempting to send your request, an error occurred.")
 	}
-	defer resp.Body.Close()
-	out, err := os.Create(filepath)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
-		return err
+		log.Println(err)
 	}
-	defer out.Close()
-	_, err = io.Copy(out, resp.Body)
-	return err
+	response.Body.Close()
+	_ = body
+	wg.Done()
 }
 
 // Check if the file exists
