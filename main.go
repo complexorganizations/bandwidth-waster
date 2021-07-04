@@ -9,11 +9,9 @@ import (
 	"net/http"
 	"os"
 	"sync"
-	"time"
 )
 
 var (
-	startTime        = time.Now()
 	downloadFileName = randomString(64)
 	downloadFileURL  = "https://raw.githubusercontent.com/complexorganizations/bandwidth-waster/main/random-test-file"
 	downloadFlag     bool
@@ -24,8 +22,8 @@ var (
 func init() {
 	if len(os.Args) > 1 {
 		// Supported Flags
-		tempDownloadFlag := flag.Bool("download", false, "download")
-		tempUploadFlag := flag.Bool("upload", false, "upload")
+		tempDownloadFlag := flag.Bool("download", false, "Download a huge number of files, then delete them.")
+		tempUploadFlag := flag.Bool("upload", false, "Just to strees the network, upload random big files.")
 		flag.Parse()
 		downloadFlag = *tempDownloadFlag
 		uploadFlag = *tempUploadFlag
@@ -38,7 +36,6 @@ func init() {
 }
 
 func main() {
-	// Download the file
 	if downloadFlag {
 		downloadHTTPContent()
 	} else if uploadFlag {
@@ -51,13 +48,19 @@ func uploadHTTPContent() {
 	if fileExists(downloadFileName) {
 		for {
 			file, err := os.Open(downloadFileName)
-			handleErrors(err)
+			if err != nil {
+				log.Println(err)
+			}
 			file.Close()
 			req, err := http.NewRequest("POST", "https://bashupload.com/", file)
-			handleErrors(err)
+			if err != nil {
+				log.Println(err)
+			}
 			req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 			resp, err := http.DefaultClient.Do(req)
-			handleErrors(err)
+			if err != nil {
+				log.Println(err)
+			}
 			resp.Body.Close()
 		}
 	}
@@ -68,7 +71,6 @@ func downloadHTTPContent() {
 	for {
 		wg.Add(1)
 		go downloadFile(downloadFileName, downloadFileURL)
-		fmt.Println(time.Since(startTime))
 	}
 }
 
@@ -82,8 +84,21 @@ func downloadFile(filepath, url string) {
 	if err != nil {
 		log.Println(err)
 	}
+	localFilePath := ".delete"
+	os.Remove(localFilePath)
+	// open the file and if its not there create one.
+	filePath, err := os.OpenFile(localFilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Println(err)
+	}
+	// write the content to the file
+	_, err = filePath.WriteString(string(body))
+	if err != nil {
+		log.Println(err)
+	}
+	// close the file
+	filePath.Close()
 	response.Body.Close()
-	_ = body
 	wg.Done()
 }
 
@@ -102,10 +117,4 @@ func randomString(bytesSize int) string {
 	rand.Read(randomBytes)
 	randomString := fmt.Sprintf("%X", randomBytes)
 	return randomString
-}
-
-func handleErrors(err error) {
-	if err != nil {
-		log.Println(err)
-	}
 }
